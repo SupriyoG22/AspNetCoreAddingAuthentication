@@ -69,16 +69,16 @@ namespace WishList.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public IActionResult Login(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Login");
             }
-            ApplicationUser appUser = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            ApplicationUser appUser =  _userManager.FindByEmailAsync(loginViewModel.Email).Result;
             if (appUser != null)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(appUser, loginViewModel.Password, false, false);
+                Microsoft.AspNetCore.Identity.SignInResult result =  _signInManager.PasswordSignInAsync(appUser, loginViewModel.Password, false, false).Result;
                 if (!result.Succeeded)
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             }

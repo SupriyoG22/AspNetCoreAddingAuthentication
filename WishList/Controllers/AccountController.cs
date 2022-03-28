@@ -47,18 +47,16 @@ namespace WishList.Controllers
             }
             var user = new ApplicationUser { UserName = registerViewModel.Email };
             var result =  _userManager.CreateAsync(user, registerViewModel.Password).Result;
-            if (result.Succeeded)
-            {
-
-            }
-            else
+            if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
-                 ModelState.AddModelError(error.Code, error.Description);
+                    ModelState.AddModelError("Password", error.Description);
                 }
+                return View(registerViewModel);
             }
-            return RedirectToAction("Register", registerViewModel);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

@@ -88,9 +88,9 @@ namespace WishList.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await _signInManager.SignOutAsync();
+            _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

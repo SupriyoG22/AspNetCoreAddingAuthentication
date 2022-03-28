@@ -73,7 +73,7 @@ namespace WishList.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Login");
+                return View(loginViewModel);
             }
             ApplicationUser appUser =  _userManager.FindByEmailAsync(loginViewModel.Email).Result;
             if (appUser != null)

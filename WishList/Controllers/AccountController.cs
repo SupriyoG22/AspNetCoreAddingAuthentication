@@ -46,7 +46,7 @@ namespace WishList.Controllers
                 return View(registerViewModel);
             }
             var user = new ApplicationUser { UserName = registerViewModel.Email };
-            var result =  _userManager.CreateAsync(user, registerViewModel.Password).Result;
+            var result = _userManager.CreateAsync(user, registerViewModel.Password).Result;
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -75,12 +75,12 @@ namespace WishList.Controllers
             {
                 return View(loginViewModel);
             }
-            ApplicationUser appUser =  _userManager.FindByEmailAsync(loginViewModel.Email).Result;
-            if (appUser != null)
+            //ApplicationUser appUser =  _userManager.FindByEmailAsync(loginViewModel.Email).Result;
+            var result = _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, false, false).Result;
+            if (!result.Succeeded)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result =  _signInManager.PasswordSignInAsync(appUser, loginViewModel.Password, false, false).Result;
-                if (!result.Succeeded)
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(loginViewModel);
             }
             return RedirectToAction("Index", "Item");
         }
